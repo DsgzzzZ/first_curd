@@ -190,7 +190,7 @@ public class ProductController {
     public String transactionalTest1(@RequestBody Product product){
         productMapper.addProduct(product);
         if (product.getProductName().equals("鼠标")){
-              throw  new IllegalArgumentException("非法字符,添加失败.将进行回滚!!!");
+              throw  new IllegalNameException("非法字符,添加失败.将进行回滚!!!");
         }
         return product.toString();
     }
@@ -201,7 +201,7 @@ public class ProductController {
     public String transactionalTest2(@RequestBody Product product){
         productMapper.addProduct(product);
         if(product.getProductName().equals("鼠标")){
-            throw new IllegalArgumentException("合法字符,添加成功,不进行回滚!!!");
+            throw new IllegalNameException("合法字符,添加成功,不进行回滚!!!");
         }
         return product.toString();
     }
