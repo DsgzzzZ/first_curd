@@ -5,11 +5,14 @@ import com.ddz.demo.dao.ProductMapper;
 import com.ddz.demo.po.Bean;
 import com.ddz.demo.po.Bean2;
 import com.ddz.demo.po.Product;
+import com.ddz.demo.utils.ObjectAndJson;
+import com.ddz.demo.utils.ObjectStream;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sun.javafx.collections.MappingChange;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-//证明是controller层并且返回json
-@RestController
+//证明是controller层并且返回体不会在解析成页面路径
+@Controller
 @RequestMapping("/Products")
 public class ProductController {
     //依赖注入
@@ -184,6 +188,7 @@ public class ProductController {
     }
 
 
+    //下面这个是为了测试事务的,通过是否回滚来判断事务是否有效,postman返回结果可以看到输出提示.
     @RequestMapping("/transactionalTest1")
     @ResponseBody
     @Transactional(rollbackFor = Exception.class,timeout = 30,propagation = Propagation.REQUIRED)
@@ -206,6 +211,53 @@ public class ProductController {
         return product.toString();
     }
 
+    //测试fastJson的使用
+    @RequestMapping("/fastjson1")
+    @ResponseBody
+    public String fastjson1(){
+        ObjectAndJson oaj = new ObjectAndJson();
+        oaj.StringToJson();
+        return "测试成功!";
+    }
 
+    @RequestMapping("/fastjson2")
+    @ResponseBody
+    public String fastjson2(){
+        ObjectAndJson oaj1 = new ObjectAndJson();
+        oaj1.jsontoString();
+        return "测试成功!";
+    }
+
+    //测试从request请求里得到的json数据
+    @RequestMapping("/fastjson3")
+    @ResponseBody
+    public String fastjson3(HttpServletRequest request)throws IOException {
+        new ObjectAndJson().getRequestQueryParams(request);
+        return "测试成功!";
+    }
+
+    //测试从request请求里获得头部信息
+    @RequestMapping("/fastjson4")
+    @ResponseBody
+    public String fastjson4(HttpServletRequest request){
+        new ObjectAndJson().getRequestHeaderParams(request);
+        return "测试成功!";
+    }
+
+    //测试对象的序列化
+    @RequestMapping("/SerializableTest1")
+    @ResponseBody
+    public String SerializableTest1(@RequestBody Bean bean)throws Exception{
+        new ObjectStream().objecttoSerializable(bean);
+        return "序列化成功!";
+    }
+
+    //测试将对象反序列化
+    @RequestMapping("/SerializableTest2")
+    @ResponseBody
+    public String SerializableTest2() throws Exception{
+        Bean bean=new ObjectStream().serializableToObject();
+        return bean.toString();
+    }
 
 }

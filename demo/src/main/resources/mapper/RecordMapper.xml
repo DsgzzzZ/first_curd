@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ddz.demo.dao.RecordMapper">
+
+    <select id="getRecordByNumber" parameterType="Integer" resultType="Record">
+        select * from record where recordNumber = #{number} and activityType = 1
+    </select>
+
+    <insert id="addRecord" parameterType="Record" useGeneratedKeys="true" keyProperty="recordId">
+        insert into record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordNumber != null and recordNumber != ''" >recordNumber,</if>
+            <if test="activityType != null and activityType != ''" >activityType,</if>
+            <if test="recordTime != null" >recordTime,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="recordNumber != null and recordNumber != ''" >#{recordNumber},</if>
+            <if test="activityType != null and activityType != ''" >#{activityType},</if>
+            <if test="recordTime != null" >#{recordTime},</if>
+        </trim>
+    </insert>
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ddz.demo.dao.OrderMapper">
+
+    <resultMap type="com.ddz.demo.po.Order" id="usermap">
+        <id column="orderId" property="orderId"/>
+        <result column="userId" property="userId"/>
+        <result column="orderTime" property="orderTime"/>
+        <result column="isPrice" property="isPrice"/>
+    </resultMap>
+
+    <insert id="addOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="orderId">
+        insert into demo.order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">userId,</if>
+            <if test="orderTime != null">orderTime,</if>
+            <if test="isPrice != null">isPrice,</if>
+        </trim>
+        <trim prefix= "values("  suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="isPrice != null">#{isPrice},</if>
+        </trim>
+    </insert>
+
+    <select id="getOrder" parameterType="Integer" resultType="Order">
+        select * from demo.order where userId = #{userId}
+    </select>
+
+    <select id="getAllUserIdIfNoPrice" resultType="Integer">
+        select userId from demo.order where isPrice = 0
+    </select>
+
+    <update id="updateOrder" parameterType="Order">
+        update demo.order
+        <trim prefix="SET">
+            <if test="isPrice != null">isPrice = #{isPrice}</if>
+        </trim>
+        where orderId = #{orderId}
+    </update>
+
+</mapper>

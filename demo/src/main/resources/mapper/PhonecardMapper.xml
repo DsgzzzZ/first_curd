@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ddz.demo.dao.PhonecardMapper">
+
+    <select id="getPhonebyNumber" parameterType="Integer" resultType="Phonecard">
+        select * from phonecard where phoneNumber = #{number}
+    </select>
+
+    <update id="updatePhonecard" parameterType="Phonecard">
+        update phonecard
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="operator != null and operator != ''">operator = #{operator},</if>
+            <if test="receiveQualifications != null">receiveQualifications = #{receiveQualifications},</if>
+            <if test="surplusFlow != null">surplusFlow = #{surplusFlow},</if>
+        </trim>
+        where phoneNumber = #{phoneNumber}
+    </update>
+</mapper>

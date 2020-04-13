@@ -1,6 +1,8 @@
 package com.ddz.demo.po;
 
-public class Bean {
+import java.io.Serializable;
+
+public class Bean implements Serializable {
     private String a;
     private String b;
 

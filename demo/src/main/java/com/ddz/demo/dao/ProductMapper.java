@@ -1,7 +1,6 @@
 package com.ddz.demo.dao;
 
 import com.ddz.demo.po.Product;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
