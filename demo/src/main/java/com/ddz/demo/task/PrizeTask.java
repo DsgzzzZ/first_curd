@@ -25,7 +25,7 @@ public class PrizeTask {
     PriceService priceService;
 
 
-    @Scheduled(cron = "0 0/1 18 * * ?")
+//    @Scheduled(cron = "0 0 10 * * ?")
     public void PrizeAnnounce(){
         int size;
         int random;

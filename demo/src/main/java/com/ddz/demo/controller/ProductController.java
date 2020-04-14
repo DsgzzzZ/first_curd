@@ -12,9 +12,12 @@ import com.github.pagehelper.PageInfo;
 import com.sun.javafx.collections.MappingChange;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 //证明是controller层并且返回体不会在解析成页面路径
-@Controller
+@RestController
 @RequestMapping("/Products")
 public class ProductController {
     //依赖注入
@@ -50,11 +53,18 @@ public class ProductController {
 
     @RequestMapping(value = "/addProduct")
     @ResponseBody
-    public String addProduct(@RequestBody Product product){
+    public String addProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
 //        String s=request.getParameter("productId");
 //        System.out.println(s);
 //        System.out.println("addProducts方法!");
 //        return "";
+        if (bindingResult.hasErrors()){
+            List<ObjectError> errors=bindingResult.getAllErrors();
+            for (ObjectError error : errors){
+                System.out.println("Error code : "+error.getCode()+" Error Message : "+error.getObjectName());
+            }
+            return "添加失败！";
+        }
         int i = productMapper.addProduct(product);
         if(i != 1){
             return "添加失败!";
@@ -73,7 +83,7 @@ public class ProductController {
         }
     }
 
-    @RequestMapping(value = "/delProduct")
+    @DeleteMapping(value = "/delProduct")
     @ResponseBody
     public String delProduct( @RequestBody Integer i){
         System.out.println("delProduct方法!");
@@ -90,7 +100,8 @@ public class ProductController {
     @RequestMapping("/test1")
     @ResponseBody
     public String test1(String a,String b){
-        return a+b;
+        System.out.println("a + b = " + (a+b));
+        return "调用成功！";
     }
 
     @RequestMapping("/test2")

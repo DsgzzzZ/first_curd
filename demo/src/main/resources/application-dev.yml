@@ -10,7 +10,12 @@ logging:
     path: e:/Project/log.log
 
 #数据源的配置,以及配置热部署
+#支持的最大文件和文件请求的最大值
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html

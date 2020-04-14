@@ -7,6 +7,7 @@ import com.ddz.demo.service.Impl.OrderServiceImpl;
 import com.ddz.demo.service.Impl.PriceServiceImpl;
 import com.ddz.demo.service.Impl.UserServiceImpl;
 import com.ddz.demo.service.OrderService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+@Api(value = "预约产品",description = "预约产品API",position = 1, protocols = "http")
 @Controller
 public class OrderPriceController {
     @Autowired
