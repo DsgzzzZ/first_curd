@@ -12,10 +12,23 @@ logging:
 #数据源的配置,以及配置热部署
 #支持的最大文件和文件请求的最大值
 spring:
+#  redis配置
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password: 123456
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
   servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+# thymeleaf模板引擎
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -35,6 +48,16 @@ spring:
     username: root
     password: jjddaybz520
     driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    #druid配置
+    druid:
+      filters: stat,wall
+      web-stat-filter:
+        enabled: true
+        url-filter: "/*"
+      stat-view-servlet:
+        login-username: admin
+        login-password: 123456
   devtools:
     restart:
       enabled: true
@@ -48,3 +71,4 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+
