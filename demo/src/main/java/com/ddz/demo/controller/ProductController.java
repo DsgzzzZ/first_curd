@@ -4,6 +4,7 @@ import com.ddz.demo.Exception.IllegalNameException;
 import com.ddz.demo.dao.ProductMapper;
 import com.ddz.demo.po.Bean;
 import com.ddz.demo.po.Bean2;
+import com.ddz.demo.po.Node;
 import com.ddz.demo.po.Product;
 import com.ddz.demo.utils.ObjectAndJson;
 import com.ddz.demo.utils.ObjectStream;
@@ -253,6 +254,14 @@ public class ProductController {
     public String fastjson4(HttpServletRequest request){
         new ObjectAndJson().getRequestHeaderParams(request);
         return "测试成功!";
+    }
+
+    //测试Node对象接收数据是否成功
+    @RequestMapping("/nodeJson")
+    @ResponseBody
+    public String nodeJson(@RequestBody Node node){
+        String json = new ObjectAndJson().getJsonToNode(node);
+        return json;
     }
 
     //测试对象的序列化

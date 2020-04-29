@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ddz.demo.po.Bean;
 import com.ddz.demo.po.Bean2;
+import com.ddz.demo.po.Node;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,18 +42,20 @@ public class ObjectAndJson {
     }
 
     /*
-      *Json转化为字符串
-      *  */
+     *Json转化为字符串
+     * */
     public void jsontoString(){
 //        json转化为简单bean
         String jsonbean = new String("{'a':'aa1','b':'bb1'}");
         Bean bean1 = JSONObject.parseObject(jsonbean,Bean.class);
-        System.out.println("json转化为简单bean"+bean1);
+        System.out.println("json转化为简单bean："+bean1);
 //        json转化为复杂bean
         String jsonbeans = new String("{'a':'a1','b':'b1','bean':{'a':'aa1','b':'bb1'},'beans':[{'a':'aaa1','b':'bbb1'},{'a':'aaa2','b':'bbb2'}]}");
         Bean2 bean2 = JSONObject.parseObject(jsonbeans,Bean2.class);
-        System.out.println("json转化为复杂bean"+bean2);
+        System.out.println("json转化为复杂bean："+bean2);
     }
+
+
 
     /*
     * 得到request请求里的body参数的类型并转化为json数据
@@ -87,6 +91,19 @@ public class ObjectAndJson {
         JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map));
         System.out.println("获得所有的头信息:"+jsonObject.toString());
 
+    }
+
+    /*
+    *  将IoT中的节点以及属性包装成一个Json数据，通过url传送到后端让Node接收
+    * */
+
+    public String getJsonToNode(Node node){
+        System.out.println("接收到的node数据："+ node.toString());
+        String nodeJson = JSON.toJSONString(node);
+        System.out.println("node转换为Json字符串："+nodeJson);
+        Node node1 = JSONObject.parseObject(nodeJson,Node.class);
+        System.out.println("在转化为Node对象："+node1.toString());
+        return nodeJson;
     }
 
 }
